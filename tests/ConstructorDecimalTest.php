@@ -34,11 +34,11 @@ class ConstructorDecimalTest extends TestCase
 	 * @param Decimal|integer|float|string $n
 	 * @return void
 	 */
-	public function testIsMatchingConstructor ( 
-		array $coefficient, 
-		int $exponent, 
-		int $sign, 
-		$n 
+	public function testIsMatchingConstructor (
+		array $coefficient,
+		int $exponent,
+		int $sign,
+		$n
 	)
 	{
 		$d = new Decimal($n, $this->_config);
@@ -70,7 +70,7 @@ class ConstructorDecimalTest extends TestCase
 	 */
 	public function testIsMatchingWithExpected (
 		string $expected,
-		$n 
+		$n
 	)
 	{ $this->assertEquals($expected, (new Decimal($n, $this->_config))->valueOf()); }
 
@@ -161,7 +161,7 @@ class ConstructorDecimalTest extends TestCase
 		];
 	}
 
-	
+
 	/**
 	 * Provider for testIsMatchingWithExpected().
 	 * @return array
@@ -221,7 +221,7 @@ class ConstructorDecimalTest extends TestCase
 	 * @return int
 	 */
 	private function randInt () : int
-	{ return (int)\floor( $this->random() * 0x20000000000000 / \pow(10, $this->random() * 16 | 0) ); }
+	{ return (int)\floor( intval($this->random() * 0x20000000000000 / \pow(10, $this->random() * 16)) ); }
 
 	/**
 	 * Get random between 0 and 1.

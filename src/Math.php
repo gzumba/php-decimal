@@ -6,12 +6,12 @@ use RuntimeException;
 /**
  * Handle native PHP Math functions to
  * control data which will be returned.
- * 
- * There "alias" prevent to use all 
+ *
+ * There "alias" prevent to use all
  * transformations required in main code
  * at Decimal class.
- * 
- * It also important to ajust global 
+ *
+ * It also important to ajust global
  * functions when requiring different
  * permissions.
  *
@@ -30,11 +30,11 @@ class Math
 	 * @return int
 	 */
 	public static function asFloat ( $num ) : float
-	{ 
+	{
 		if ( $num instanceof Decimal )
 		{ return $num->toFloat(); }
 
-		return \floatval($num); 
+		return \floatval($num);
 	}
 
 	/**
@@ -45,11 +45,11 @@ class Math
 	 * @return int
 	 */
 	public static function asInt ( $num ) : int
-	{ 
+	{
 		if ( $num instanceof Decimal )
 		{ return $num->toInt(); }
 
-		return \intval($num); 
+		return \intval($num);
 	}
 
 	/**
@@ -60,17 +60,17 @@ class Math
 	 * @return string
 	 */
 	public static function asStr ( $num ) : string
-	{ 
+	{
 		if ( $num instanceof Decimal )
 		{ return $num->toString(); }
 
-		return \strval($num); 
+		return \strval($num);
 	}
 
 	/**
-	 * Check 5 rounding digits if `repeating` 
+	 * Check 5 rounding digits if `repeating`
 	 * is null, 4 otherwise.
-	 * 
+	 *
 	 * `repeating == null` if caller is `log` or `pow`,
 	 * `repeating != null` if caller is `naturalLogarithm` or `naturalExponential`.
 	 *
@@ -115,18 +115,18 @@ class Math
 			if ( $i < 3 )
 			{
 				if ( $i == 0 )
-				{ $rd = ($rd/100) | 0; }
+				{ $rd = intval($rd/100); }
 				else if ( $i == 1 )
-				{ $rd = ($rd/10) | 0; }
+				{ $rd = intval($rd/10); }
 
 				$r = (
-					($rm < 4 && $rd == 99999) || 
+					($rm < 4 && $rd == 99999) ||
 					($rm > 3 && $rd == 49999) ||
-					$rd == 50000 || 
+					$rd == 50000 ||
 					$rd == 0
 				);
 			}
-			else 
+			else
 			{
 				$digit = isset($d[$di + 1]) ? ($d[$di + 1] / $k / 100) : 0;
 
@@ -142,35 +142,35 @@ class Math
 			if ( $i < 4 )
 			{
 				if ( $i == 0 )
-				{ $rd = ($rd/1000) | 0; }
+				{ $rd = intval($rd/1000); }
 				else if ( $i == 1 )
-				{ $rd = ($rd/100) | 0; }
+				{ $rd = intval($rd/100); }
 				else if ( $i == 2 )
-				{ $rd = ($rd/10) | 0; }
+				{ $rd = intval($rd/10); }
 
-				$r = (($repeating || $rm < 4) && $rd == 9999) 
+				$r = (($repeating || $rm < 4) && $rd == 9999)
 						|| (!$repeating && $rm > 3 && $rd == 4999);
 			}
-			else 
+			else
 			{
 				$digit = isset($d[$di + 1]) ? ($d[$di + 1] / $k / 1000) : 0;
 
-				$r = ((($repeating || $rm < 4) && $rd + 1 == $k) 
-						|| (!$repeating && $rm > 3 && $rd + 1 == $k / 2)) 
+				$r = ((($repeating || $rm < 4) && $rd + 1 == $k)
+						|| (!$repeating && $rm > 3 && $rd + 1 == $k / 2))
 						&& ($digit) == static::intPow(10, $i - 3) - 1;
 			}
 		}
-		
+
 		return $r;
 	}
 
 	/**
-	 * Convert string of $baseIn to an array of 
+	 * Convert string of $baseIn to an array of
 	 * numbers of $baseOut.
 	 *
 	 * Eg. convertBase('255', 10, 16) returns [15, 15].
 	 * Eg. convertBase('ff', 16, 10) returns [2, 5, 5].
-	 * 
+	 *
 	 * @param string $str
 	 * @param integer $baseIn
 	 * @param integer $baseOut
@@ -201,7 +201,7 @@ class Math
 					if ( !isset($arr[$j+1]) )
 					{ $arr[$j+1] = 0; }
 
-					$arr[$j+1] += \intval($arr[$j] / $baseOut | 0);
+					$arr[$j+1] += \intval($arr[$j] / $baseOut);
 					$arr[$j] %= $baseOut;
 				}
 			}
@@ -251,14 +251,14 @@ class Math
 		{ return '0'; }
 
 		// Remove trailing zeros of last w.
-		for (; $w != 0 && $w % 10 === 0;) 
+		for (; $w != 0 && $w % 10 === 0;)
 		{ $w /= 10; }
 
 		return $str.$w;
 	}
 
 	/**
-	 * Calculate the base 10 exponent from 
+	 * Calculate the base 10 exponent from
 	 * the base 1e7 exponent.
 	 * It expects an array with $digits at
 	 * Decimal::LOG_BASE ordened.
@@ -282,7 +282,7 @@ class Math
 	 * Get precision to $digits.
 	 * It expects an array with $digits at
 	 * Decimal::LOG_BASE ordened.
-	 * 
+	 *
 	 * e.g.
 	 * [1250000, 2540000, ...]
 	 *
@@ -301,7 +301,7 @@ class Math
 		if ( $w )
 		{
 			// Subtract the number of trailing zeros of the last word
-			for (; $w % 10 == 0; $w /= 10) 
+			for (; $w % 10 == 0; $w /= 10)
 			{ $len--; }
 
 			// Add the number of digits of the first word
@@ -316,21 +316,21 @@ class Math
 	 * Get an string with $k zeros.
 	 *
 	 * old style (too slow)
-	 * 
+	 *
 	 * for ( ; $k--; )
 	 * { $zn .= '0'; }
-	 * 
+	 *
 	 * new style
-	 * 
+	 *
 	 * str_repeat is faster than a for-loop
-	 * 
-	 * However, str_repeat becames slow with integers 
-	 * greater than 999999999, then, first we decrease 
+	 *
+	 * However, str_repeat becames slow with integers
+	 * greater than 999999999, then, first we decrease
 	 * 999999999 from $i till $i < 999999999, then we
 	 * concat 0x999999999 $nin times and concat $i if
 	 * is needed. It will give us power to concat
 	 * 999999999+5000000000 of zeros.
-	 * 
+	 *
 	 * Numbers <= 9...0.000 seconds
 	 * Numbers <= 99...0.000 seconds
 	 * Numbers <= 999...0.000 seconds
@@ -345,10 +345,10 @@ class Math
 	 * Numbers <= 3999999999...4.840 seconds
 	 * Numbers <= 4999999999...5.420 seconds
 	 * Numbers <= 5999999999...6.529 seconds
-	 * 
+	 *
 	 * After 5999999999, however, memory usage is too
 	 * heavy, should we fix it?
-	 * 
+	 *
 	 * @todo 2? Try to be faster when $k is greater than 5999999999.
 	 * @param integer $k Quantity of zeros.
 	 * @since 1.0.0
@@ -357,7 +357,7 @@ class Math
 	public static function getZeroString (
 		int $k
 	) : string
-	{ 
+	{
 		$zn  = '';
 
 		while ( $k > 999999999 )
@@ -365,11 +365,11 @@ class Math
 			$k = $k > PHP_INT_MAX ? \bcsub($k, 999999999) : $k-999999999;
 			$zn .= str_repeat('0', 999999999);
 		}
-	
+
 		if ( $k != 0 )
 		{ $zn .= str_repeat('0', $k); }
 
-		return $zn; 
+		return $zn;
 	}
 
 	/**
@@ -473,27 +473,27 @@ class Math
 
 	/**
 	 * Enhanced native sqrt() function.
-	 * 
+	 *
 	 * sqrt() cannot handle higher scales number,
 	 * which can make some decimals calculations
 	 * weird (with less precision than required).
-	 * 
+	 *
 	 * Other side, bcsqrt() can handle with scale
 	 * but cannot handle with float or exponential
 	 * values.
-	 * 
+	 *
 	 * This function analyzes $num value to determine
-	 * if will be better to a bcsqrt() or, if can't, 
+	 * if will be better to a bcsqrt() or, if can't,
 	 * do a sqrt() instead.
-	 * 
+	 *
 	 * Even we are calling two Decimal functions as
 	 * toString() and toNumber() it makes more fast
 	 * then only do sqrt() to estimate square root.
-	 * 
+	 *
 	 * Since some values may return INF value at
 	 * sqrt() but when using bcsqrt() it will return
 	 * a regular number.
-	 * 
+	 *
 	 * But, even with this approach, sqrt() it is still
 	 * the slower method to Decimals and may need some
 	 * improvements soon.
@@ -514,7 +514,7 @@ class Math
 
 		return new Decimal($s, $num->_c());
 	}
-	
+
 	/**
 	 * Exponent $e must be positive and non-zero.
 	 * It does use times symbol (*) instead pow()
@@ -533,7 +533,7 @@ class Math
 
 		while ( --$exp )
 		{ $n *= $base; }
-		
+
 		return $n;
 	}
 
@@ -548,11 +548,11 @@ class Math
 	 * @since 1.0.0
 	 * @return integer
 	 */
-	public static function compare ( 
-		array $a, 
-		array $b, 
-		int $al, 
-		int $bl 
+	public static function compare (
+		array $a,
+		array $b,
+		int $al,
+		int $bl
 	) : int
 	{
 		if ( $al != $bl )
@@ -576,7 +576,7 @@ class Math
 	 * Used by divide() function.
 	 * Multiplies all integers at $x array by $k adding $carry
 	 * and, after, normalize it to $base.
-	 * 
+	 *
 	 * Assumes non-zero x and k, and hence non-zero result.
 	 *
 	 * @param array $x
@@ -585,10 +585,10 @@ class Math
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public static function multiplyInt ( 
-		array $x, 
-		int $k, 
-		int $base 
+	public static function multiplyInt (
+		array $x,
+		int $k,
+		int $base
 	) : array
 	{
 		$carry = 0;
@@ -598,7 +598,7 @@ class Math
 		{
 			$temp = $x[$i] * $k + $carry;
 			$x[$i] = $temp % $base | 0;
-			$carry = $temp / $base | 0;
+			$carry = intval($temp / $base);
 		}
 
 		if ( $carry )
@@ -618,11 +618,11 @@ class Math
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public static function subtract ( 
-		array $a, 
-		array $b, 
-		int $al, 
-		int $base 
+	public static function subtract (
+		array $a,
+		array $b,
+		int $al,
+		int $base
 	) : array
 	{
 		$i = 0;
