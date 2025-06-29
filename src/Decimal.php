@@ -150,7 +150,7 @@ class Decimal
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public function __construct ( $n, DecimalConfig $config = null )
+	public function __construct ( $n, ?DecimalConfig $config = null )
 	{
 		$config = $config instanceof DecimalConfig ? $config : DecimalConfig::instance();
 		$this->_c = $config;
@@ -2833,7 +2833,7 @@ class Decimal
 	 * @since 1.0.0
 	 * @return Decimal
 	 */
-	public static function random ( int $sd = null ) : Decimal
+	public static function random ( ?int $sd = null ) : Decimal
 	{
 		$i = 0;
 		$c = DecimalConfig::instance();
@@ -3745,7 +3745,7 @@ class Decimal
 	 */
 	public function toNearest (
 		$y = null,
-		int $rm = null
+		?int $rm = null
 	) : Decimal
 	{
 		$x = $this;
@@ -4872,7 +4872,7 @@ class Decimal
 	protected static function __getLn10 (
 		DecimalConfig $config,
 		int $sd = 2,
-		int $pr = null
+		?int $pr = null
 	) : Decimal
 	{
 		if ( $sd > DecimalConfig::LN10_PRECISION )
@@ -5761,7 +5761,7 @@ class Decimal
 		Decimal $x,
 		int $baseOut,
 		$sd = null,
-		int $rm = null
+		?int $rm = null
 	)
 	{
 		$c = $x->_c;

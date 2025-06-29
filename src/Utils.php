@@ -32,14 +32,14 @@ class Utils
 
 	/**
 	 * Slice string from $si at $ei.
-	 * 
+	 *
 	 * This functions handle string a little bit
 	 * different of native substr() function.
-	 * 
+	 *
 	 * While substr() requires $start and $length,
 	 * this requires $start and $end. Any of both
 	 * can be negative and whatever.
-	 * 
+	 *
 	 * It produces an output different from substr()
 	 * working similar to javascript native function
 	 * String.prototype.slice().
@@ -52,10 +52,10 @@ class Utils
 	 * @since 1.0.0
 	 * @return string
 	 */
-	public static function sliceStr ( 
-		string $str, 
-		int $si, 
-		int $ei = null 
+	public static function sliceStr (
+		string $str,
+		int $si,
+		?int $ei = null
 	) : string
 	{
 		$len = \strlen($str);
@@ -82,14 +82,14 @@ class Utils
 
 	/**
 	 * Slice string from $si at $ei.
-	 * 
+	 *
 	 * This functions handle string a little bit
 	 * different of native array_slice() function.
-	 * 
+	 *
 	 * While substr() requires $start and $length,
 	 * this requires $start and $end. Any of both
 	 * can be negative and whatever.
-	 * 
+	 *
 	 * It produces an output different from array_slice()
 	 * working similar to javascript native function
 	 * Array.prototype.slice().
@@ -102,10 +102,10 @@ class Utils
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public static function sliceArray ( 
-		array $arr, 
-		int $si = null, 
-		int $ei = null
+	public static function sliceArray (
+		array $arr,
+		?int $si = null,
+		?int $ei = null
 	) : array
 	{
 		$len = \count($arr);
@@ -160,7 +160,7 @@ class Utils
 		{ $_arr[] = $arr[$i]; }
 
 		return $_arr;
-	} 
+	}
 
 	/**
 	 * Truncate array to $length limit.
