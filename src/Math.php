@@ -503,7 +503,7 @@ class Math
 	 * @since 1.0.0
 	 * @return Decimal
 	 */
-	public static function sqrt ( Decimal $num, int $scale = null ) : Decimal
+	public static function sqrt ( Decimal $num, ?int $scale = null ) : Decimal
 	{
 		$_s = Math::asStr($num);
 
